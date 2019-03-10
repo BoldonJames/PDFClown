@@ -34,7 +34,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
+
+#if !NETSTANDARD2_0
 using System.Windows.Forms;
+#endif
 
 namespace org.pdfclown.tools
 {
@@ -186,10 +189,14 @@ namespace org.pdfclown.tools
       PrintDocument printDocument = GetPrintDocument(pages);
       if(!silent)
       {
+#if NETSTANDARD2_0
+                throw new System.PlatformNotSupportedException("PrintDialog is not supported in .NET Standard");
+#else
         PrintDialog printDialog = new PrintDialog();
         printDialog.Document = printDocument;
-        if(printDialog.ShowDialog() != DialogResult.OK)
+        if (printDialog.ShowDialog() != DialogResult.OK)
           return false;
+#endif
       }
 
       printDocument.Print();
@@ -258,8 +265,8 @@ namespace org.pdfclown.tools
       contentContext.Render(Graphics.FromImage(image), size);
       return image;
     }
-    #endregion
-    #endregion
-    #endregion
+#endregion
+#endregion
+#endregion
   }
 }
