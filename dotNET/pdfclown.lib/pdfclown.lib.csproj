@@ -3,13 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
 
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PDFClown.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -19,6 +13,12 @@
     <RepositoryUrl>https://github.com/BoldonJames/PDFClown</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>Unofficial port of PDFClown 0.2.0 to .NET Standard 2.0</Description>
+    <Authors>Stefano Chizzolini</Authors>
+    <Company>Stefano Chizzolini</Company>
+    <Product>PDF Clown for .NET</Product>
+    <Version>0.2.0</Version>
+    <PackageId>PDFClown</PackageId>
+    <AssemblyName>PDFClown</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
