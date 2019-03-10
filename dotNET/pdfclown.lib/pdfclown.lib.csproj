@@ -13,6 +13,12 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PDFClown.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <Copyright>Copyright 2006-2015 Stefano Chizzolini</Copyright>
+    <PackageProjectUrl>https://pdfclown.org/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BoldonJames/PDFClown</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>Unofficial port of PDFClown 0.2.0 to .NET Standard 2.0</Description>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
