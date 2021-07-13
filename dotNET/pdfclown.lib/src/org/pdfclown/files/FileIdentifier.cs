@@ -128,7 +128,7 @@ namespace org.pdfclown.files
         NOTE: To help ensure the uniqueness of file identifiers, it is recommended that they are
         computed by means of a message digest algorithm such as MD5 [PDF:1.7:10.3].
       */
-      using (MD5 md5 = MD5.Create())
+      using (var sha1 = SHA1.Create())
       {
         using(BinaryWriter buffer = new BinaryWriter(new MemoryStream(), Charset.ISO88591))
         {
@@ -167,7 +167,7 @@ namespace org.pdfclown.files
             correct file has been found.
           */
           PdfString versionID = new PdfString(
-            md5.ComputeHash(((MemoryStream)buffer.BaseStream).ToArray()),
+            sha1.ComputeHash(((MemoryStream)buffer.BaseStream).ToArray()),
             PdfString.SerializationModeEnum.Hex
             );
           BaseDataObject[1] = versionID;
