@@ -58,7 +58,12 @@ namespace org.pdfclown.files
       BinaryWriter buffer,
       object value
       )
-    {buffer.Write(value.ToString());}
+    {
+      if (value is PdfDate pdfDate)
+        buffer.Write(pdfDate.RawValue);
+      else
+        buffer.Write(value.ToString());
+    }
 
     private static PdfArray CreateBaseDataObject(
       )
