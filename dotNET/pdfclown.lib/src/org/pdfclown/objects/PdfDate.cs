@@ -106,7 +106,7 @@ namespace org.pdfclown.objects
     private static string Format(
       DateTime value
       )
-    {return ("D:" + value.ToString(FormatString).Replace(':','\'') + "'");}
+    {return ("D:" + value.ToString(FormatString, new CultureInfo("en-US")).Replace(':','\'') + "'");}
     #endregion
     #endregion
     #endregion
