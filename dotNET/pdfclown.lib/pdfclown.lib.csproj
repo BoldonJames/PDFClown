@@ -16,7 +16,7 @@
     <Authors>Stefano Chizzolini</Authors>
     <Company>Stefano Chizzolini</Company>
     <Product>PDF Clown for .NET</Product>
-    <Version>0.2.1.0</Version>
+    <Version>0.2.2.0</Version>
     <PackageId>BoldonJames.PDFClown</PackageId>
     <AssemblyName>PDFClown</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
