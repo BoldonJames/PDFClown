@@ -23,7 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore dotNET/PDFClown.sln
     - name: Build
-      run: dotnet build dotNET/PDFClown.sln --no-restore /p:PackageOutputPath=artifacts
+      run: dotnet build dotNET/PDFClown.sln --no-restore /p:PackageOutputPath=artifacts /p:ContinuousIntegrationBuild=true
     - name: Upload nuget package artifact
       uses: actions/upload-artifact@v3
       with:
