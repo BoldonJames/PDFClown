@@ -24,23 +24,18 @@
 */
 
 using org.pdfclown.bytes;
-using org.pdfclown.documents;
-using org.pdfclown.files;
 using org.pdfclown.objects;
-using org.pdfclown.util.collections.generic;
 using org.pdfclown.util.parsers;
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace org.pdfclown.tokens
 {
-  /**
-    <summary>PDF file reader.</summary>
-  */
-  public sealed class Reader
+    /**
+      <summary>PDF file reader.</summary>
+    */
+    public sealed class Reader
     : IDisposable
   {
     #region types
@@ -116,12 +111,13 @@ namespace org.pdfclown.tokens
     public FileInfo ReadInfo(
       )
     {
-  //TODO:hybrid xref table/stream
-      Version version = Version.Get(parser.RetrieveVersion());
+      //TODO:hybrid xref table/stream
+
+      Version version = Version.Get(parser.RetrieveVersion(out long headerOffset));
       PdfDictionary trailer = null;
       SortedDictionary<int,XRefEntry> xrefEntries = new SortedDictionary<int,XRefEntry>();
       {
-        long sectionOffset = parser.RetrieveXRefOffset();
+        long sectionOffset = parser.RetrieveXRefOffset() + headerOffset;
         while(sectionOffset > -1)
         {
           // Move to the start of the xref section!
@@ -172,7 +168,7 @@ namespace org.pdfclown.tokens
                 }
 
                 // Get the indirect object offset!
-                int offset = (int)parser.GetToken(1);
+                int offset = (int)parser.GetToken(1) + (int)headerOffset;
                 // Get the object generation number!
                 int generation = (int)parser.GetToken(1);
                 // Get the usage tag!
@@ -222,7 +218,7 @@ namespace org.pdfclown.tokens
 
           // Get the previous xref-table section's offset!
           PdfInteger prevXRefOffset = (PdfInteger)sectionTrailer[PdfName.Prev];
-          sectionOffset = (prevXRefOffset != null ? prevXRefOffset.IntValue : -1);
+          sectionOffset = (prevXRefOffset != null ? prevXRefOffset.IntValue + headerOffset : -1);
         }
       }
       return new FileInfo(version, trailer, xrefEntries);
