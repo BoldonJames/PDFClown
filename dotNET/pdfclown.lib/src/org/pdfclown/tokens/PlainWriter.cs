@@ -67,6 +67,7 @@ namespace org.pdfclown.tokens
     {
       // 1. Original content (head, body and previous trailer).
       FileParser parser = file.Reader.Parser;
+      long headerOffset = parser.FindTrueHeaderPosition();
       stream.Write(parser.Stream);
 
       // 2. Body update (modified indirect objects insertion).
@@ -118,7 +119,7 @@ namespace org.pdfclown.tokens
             AppendXRefEntry(
               xrefSubBuilder,
               indirectObjectEntry.Value.Reference,
-              stream.Length
+              stream.Length - headerOffset
               );
             // Add in-use entry content!
             indirectObjectEntry.Value.WriteTo(stream, file);
@@ -148,7 +149,7 @@ namespace org.pdfclown.tokens
       }
 
       // 3. XRef-table last section.
-      long startxref = stream.Length;
+      long startxref = stream.Length - headerOffset;
       stream.Write(xrefBuilder.ToString());
 
       // 4. Trailer.

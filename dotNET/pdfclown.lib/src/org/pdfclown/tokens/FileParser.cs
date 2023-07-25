@@ -24,22 +24,18 @@
 */
 
 using org.pdfclown.bytes;
-using org.pdfclown.documents;
-using org.pdfclown.files;
 using org.pdfclown.objects;
 using org.pdfclown.util.parsers;
 
 using System;
-using System.Globalization;
-using System.IO;
 using System.Text;
 
 namespace org.pdfclown.tokens
 {
-  /**
-    <summary>PDF file parser [PDF:1.7:3.2,3.4].</summary>
-  */
-  public sealed class FileParser
+    /**
+      <summary>PDF file parser [PDF:1.7:3.2,3.4].</summary>
+    */
+    public sealed class FileParser
     : BaseParser
   {
     #region types
@@ -214,16 +210,62 @@ namespace org.pdfclown.tokens
     /**
       <summary>Retrieves the PDF version of the file [PDF:1.6:3.4.1].</summary>
     */
-    public string RetrieveVersion(
+    public string RetrieveVersion(out long headerOffset
       )
     {
       IInputStream stream = Stream;
       stream.Seek(0);
+
+      headerOffset = FindTrueHeaderPosition();
+
+      stream.Seek(headerOffset);
+
       string header = stream.ReadString(10);
       if(!header.StartsWith(Keyword.BOF))
         throw new PostScriptParseException("PDF header not found.", this);
 
       return header.Substring(Keyword.BOF.Length,3);
+    }
+
+    /**
+      <summary>Some third-party tools insert a block before the header. 
+      The header shuold be the first entry in the document, 
+      therefore find the true header here.</summary>
+      <returns>Header position whithin stream.</returns>
+    */
+    internal long FindTrueHeaderPosition(
+      )
+    {
+      IInputStream stream = Stream;
+      long position = stream.Position;
+      stream.Seek(0);
+
+      do
+      {
+        int read = stream.ReadByte();
+        switch (read)
+        {
+          case Symbol.Percent:    // Comment
+            long headerOffset = stream.Position - 1;
+
+            StringBuilder header = new StringBuilder(Keyword.BOF.Length);
+            header.Append(Convert.ToChar(read));
+            header.Append(stream.ReadString(4));
+            if (!header.ToString().StartsWith(Keyword.BOF))
+            {
+              continue;
+            }
+
+            // Header found
+            stream.Seek(position);
+            return headerOffset;
+
+          case -1:                // EOF
+            stream.Seek(position);
+            return 0;
+        }
+      }
+      while (true);
     }
 
     /**
