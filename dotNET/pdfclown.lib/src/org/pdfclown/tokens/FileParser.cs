@@ -28,6 +28,7 @@ using org.pdfclown.objects;
 using org.pdfclown.util.parsers;
 
 using System;
+using System.Text;
 
 namespace org.pdfclown.tokens
 {
@@ -246,8 +247,19 @@ namespace org.pdfclown.tokens
         {
           case Symbol.Percent:    // Comment
             long headerOffset = stream.Position - 1;
+
+            StringBuilder header = new StringBuilder(Keyword.BOF.Length);
+            header.Append(Convert.ToChar(read));
+            header.Append(stream.ReadString(4));
+            if (!header.ToString().StartsWith(Keyword.BOF))
+            {
+              continue;
+            }
+
+            // Header found
             stream.Seek(position);
             return headerOffset;
+
           case -1:                // EOF
             stream.Seek(position);
             return 0;
